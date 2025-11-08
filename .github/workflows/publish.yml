@@ -7,7 +7,7 @@ on:
   workflow_call:
 
 concurrency:
-  group: publish
+  group: ${{ github.repository_id }}-publish
 
 permissions:
   id-token: write

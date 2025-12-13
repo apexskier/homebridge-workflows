@@ -24,4 +24,8 @@ jobs:
       - name: Verify version matches tag
         run: test "$(npm pkg get version)" = "\"${GITHUB_REF#refs/tags/v}\""
       - run: npm ci
-      - run: npm publish # this runs prepare
+      - run: npm i -g semver@6
+      - name: Get tag
+        id: get-tag
+        run: echo "tag=$(node -e 'console.log(require("semver").parse(require("./package.json").version).prerelease.at(0) || "latest")')" >> $GITHUB_OUTPUT
+      - run: npm publish --tag "${{ steps.get-tag.outputs.tag }}" # this runs prepare
